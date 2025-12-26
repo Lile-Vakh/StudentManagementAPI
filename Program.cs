@@ -1,9 +1,15 @@
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using StudentManagementAPI.Data;
 using StudentManagementAPI.Mapping;
+using StudentManagementAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddFluentValidation(fv =>
+        fv.RegisterValidatorsFromAssemblyContaining<StudentDTOValidator>());
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options => 

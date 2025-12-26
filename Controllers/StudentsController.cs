@@ -57,9 +57,6 @@ public class StudentsController : ControllerBase
    [HttpPost]
    public async Task<IActionResult> CreateStudent(StudentDTO dto)
    {
-      if (dto.Age < 16)
-         return BadRequest("Age must be >= 16");
-
       if (await _context.Students.AnyAsync(s => s.Email == dto.Email))
          return BadRequest("Email already exists");
 
@@ -77,9 +74,6 @@ public class StudentsController : ControllerBase
    [HttpPut("{id}")]
    public async Task<IActionResult> UpdateStudent(int id, StudentDTO dto)
    {
-      if (dto.Age < 16)
-         return BadRequest("Age must be >= 16");
-
       var student = await _context.Students.FindAsync(id);
       if (student == null) return NotFound();
 
@@ -87,8 +81,8 @@ public class StudentsController : ControllerBase
          return BadRequest("Email must be unique");
 
       _mapper.Map(dto, student);
-
       await _context.SaveChangesAsync();
+
       return NoContent();
    }
 
